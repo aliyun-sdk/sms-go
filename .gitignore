@@ -14,3 +14,5 @@
 *.out
 
 go.sum
+
+run_test.cmd

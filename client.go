@@ -43,9 +43,31 @@ func (c *Client) Send(mobile string, args map[string]interface{}) error {
 	return sendRes.GetError()
 }
 
-// SendCode 发送验证码
+// SendCode 发送单条验证码
 func (c *Client) SendCode(mobile, code string) error {
 	return c.Send(mobile, map[string]interface{}{"code": code})
+}
+
+// SendBatch 批量发送短信
+// 与Send不同的是,SendBatch支持不同的发送参数和签名,上限为100个手机号码
+// 详见 https://help.aliyun.com/document_detail/102364.html
+func (c *Client) SendBatch(items BatchItems) error {
+	req := c.genRequest(
+		Method("POST"),
+		Action("SendBatchSms"),
+	)
+	if err := items.applyTo(req); err != nil {
+		return err
+	}
+	res, err := c.client.ProcessCommonRequest(req)
+	if err != nil {
+		return err
+	}
+	var sendRes sendResponse
+	if err := json.Unmarshal(res.GetHttpContentBytes(), &sendRes); err != nil {
+		return err
+	}
+	return sendRes.GetError()
 }
 
 func (c *Client) genRequest(fns ...Option) *requests.CommonRequest {
