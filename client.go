@@ -22,17 +22,10 @@ func (c *Client) Clone(fns ...Option) *Client {
 // Send 短信发送
 // 支持对多个手机号码发送短信,手机号码之间以英文逗号分隔,上限为1000个手机号码
 // 详见 https://help.aliyun.com/document_detail/101414.html
-func (c *Client) Send(mobile string, args map[string]interface{}) error {
-	param, err := json.Marshal(args)
-	if err != nil {
-		return err
-	}
-	req := c.genRequest(
-		Method("POST"), Action("SendSms"),
-		QueryParam("PhoneNumbers", mobile),
-		QueryParam("TemplateParam", string(param)),
-	)
-	res, err := c.client.ProcessCommonRequest(req)
+func (c *Client) Send(fns ...Option) error {
+	fns = append(fns, Method("POST"))
+	fns = append(fns, Action("SendSms"))
+	res, err := c.client.ProcessCommonRequest(c.genRequest(fns...))
 	if err != nil {
 		return err
 	}
@@ -41,11 +34,6 @@ func (c *Client) Send(mobile string, args map[string]interface{}) error {
 		return err
 	}
 	return sendRes.GetError()
-}
-
-// SendCode 发送单条验证码
-func (c *Client) SendCode(mobile, code string) error {
-	return c.Send(mobile, map[string]interface{}{"code": code})
 }
 
 // SendBatch 批量发送短信

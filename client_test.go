@@ -23,7 +23,10 @@ func init() {
 }
 
 func TestClient_Send(t *testing.T) {
-	err = client.SendCode("17757171483", "12345")
+	err = client.Send(
+		Mobile("17757171482"),
+		Parameter(map[string]interface{}{"code": "123456"}),
+	)
 	if err != nil {
 		t.Error(err)
 	}

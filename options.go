@@ -1,6 +1,8 @@
 package sms
 
 import (
+	"encoding/json"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 )
 
@@ -48,6 +50,15 @@ func QueryParam(k, v string) Option {
 	return func(req *requests.CommonRequest) {
 		req.QueryParams[k] = v
 	}
+}
+
+func Mobile(ss string) Option {
+	return QueryParam("PhoneNumbers", ss)
+}
+
+func Parameter(v map[string]interface{}) Option {
+	param, _ := json.Marshal(v)
+	return QueryParam("TemplateParam", string(param))
 }
 
 func SignName(n string) Option {
