@@ -25,7 +25,7 @@ func init() {
 func TestClient_Send(t *testing.T) {
 	err = client.Send(
 		Mobile("17757171482"),
-		Parameter(map[string]interface{}{"code": "123456"}),
+		Parameter(map[string]string{"code": "123456"}),
 	)
 	if err != nil {
 		t.Error(err)
@@ -38,13 +38,13 @@ func TestClient_SendBatch(t *testing.T) {
 			// "您的短信签名, 若已全局配置则可留空"
 			Sign:   "",
 			Mobile: "17757171482",
-			Params: map[string]interface{}{"code": "01234"},
+			Params: map[string]string{"code": "01234"},
 		},
 		{
 			// "您的短信签名, 若已全局配置则可留空"
 			Sign:   "",
 			Mobile: "17757171483",
-			Params: map[string]interface{}{"code": "56789"},
+			Params: map[string]string{"code": "56789"},
 		},
 	}
 	err = client.SendBatch(items)

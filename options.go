@@ -56,7 +56,7 @@ func Mobile(ss string) Option {
 	return QueryParam("PhoneNumbers", ss)
 }
 
-func Parameter(v map[string]interface{}) Option {
+func Parameter(v map[string]string) Option {
 	param, _ := json.Marshal(v)
 	return QueryParam("TemplateParam", string(param))
 }

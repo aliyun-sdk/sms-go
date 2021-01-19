@@ -10,7 +10,7 @@ import (
 type BatchItem struct {
 	Sign   string
 	Mobile string
-	Params map[string]interface{}
+	Params map[string]string
 }
 
 type BatchItems []BatchItem
@@ -21,7 +21,7 @@ func (items BatchItems) applyTo(req *requests.CommonRequest) error {
 	}
 	signs := make([]string, len(items))
 	mobiles := make([]string, len(items))
-	params := make([]map[string]interface{}, len(items))
+	params := make([]map[string]string, len(items))
 	for i, item := range items {
 		if item.Mobile == "" {
 			continue
